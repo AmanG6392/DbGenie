@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         execute: async ({ query }) => {
           console.log('Query', query);
 
-          return '';
+          return ;
           
         },
       }),
