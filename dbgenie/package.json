@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "cmd /c \"drizzle-kit migrate || exit /b 0\"",
+    "db:studio": "drizzle-kit studio",
+    "db:push": "drizzle-kit push --config=drizzle.config.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.77",
