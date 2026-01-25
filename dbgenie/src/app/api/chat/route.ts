@@ -11,6 +11,8 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
   
   const SYSTEM_PROMPT = `You are an expert SQL assistant that helps users to query their database using natural language.
+  
+  ${new Date().toLocaleString('sv-SE')}
   You have access to following tools:
     1. db tool - call this tool to query the database.
     2. schema tool - call this  tool to get the database schema which will help you to write sql query.
