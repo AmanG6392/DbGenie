@@ -1,5 +1,5 @@
 import { groq } from "@/lib/grok";
-import { generateText, UIMessage, convertToModelMessages, tool, stepCountIs } from 'ai';
+import { streamText, UIMessage, convertToModelMessages, tool, stepCountIs } from 'ai';
 import z from "zod";
 import { db } from "@/src/db/db";
 
@@ -11,9 +11,9 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
   
   const SYSTEM_PROMPT = `You are an expert SQL assistant that helps users to query their database using natural language.
-  You MUST call the schema tool before answering the first user query.
-  Do NOT ask the user for permission to call the schema tool.
-  After the schema tool is called once, use it to generate SELECT queries.
+  You have access to following tools:
+    1. db tool - call this tool to query the database.
+    2. schema tool - call this  tool to get the database schema which will help you to write sql query.
   
   Rules:
   - Generate ONLY SELECT queries( no INSERT, UPDATE, DELETE, DROP)
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   
   Always respond in a helpful, conversational tone while being technically accurate.`;
 
-  const result = await generateText({
+  const result = streamText({
     model: groq("llama-3.1-8b-instant"),
     messages: convertToModelMessages(messages),
     system: SYSTEM_PROMPT,
@@ -68,20 +68,20 @@ export async function POST(req: Request) {
            // string search [delete, update] --> Guardrails
            const cleanedQuery = query.trim().toUpperCase();
 
-           if (!cleanedQuery.startsWith("SELECT")) {
-             throw new Error("Only SELECT queries are allowed");
-           }
-           
-           if (/DELETE|UPDATE|INSERT|DROP|ALTER|TRUNCATE/.test(cleanedQuery)) {
-             throw new Error("Dangerous SQL detected");
-           }
-           
-           return await db.run(query);
+     if (!cleanedQuery.startsWith("SELECT")) {
+       throw new Error("Only SELECT queries are allowed");
+     }
+     
+     if (/DELETE|UPDATE|INSERT|DROP|ALTER|TRUNCATE/.test(cleanedQuery)) {
+       throw new Error("Dangerous SQL detected");
+     }
+     
+     return await db.run(query);
   
         },
       }),
     },
   });
 
-return Response.json({ role: "assistant", content: result.text });
+  return result.toUIMessageStreamResponse();
 }
