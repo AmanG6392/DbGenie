@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   const { messages }: { messages: UIMessage[] } = await req.json();
   
-  const SYSTEM_PROMPT = `You are an expert SQL assistant that helps users to query their database using natural language.
+  const SYSTEM_PROMPT = `You are an expert SQL assistant named as DBgenie that helps users to query their database using natural language.
   
   ${new Date().toLocaleString('sv-SE')}
   You have access to following tools:
@@ -20,12 +20,15 @@ export async function POST(req: Request) {
   Rules:
   - Generate ONLY SELECT queries( no INSERT, UPDATE, DELETE, DROP)
   - Always use the schema provided by the schema tool
-  - Return valid SQLite syntax
+  - Pass valid SQLite syntax in db tool.
   - If a column does not exist in the table being queried, you MUST JOIN the correct table.
   - Never reference columns that are not present in the selected table.
+  - IMPORTANT: To query database call db tool, don't return just SQL query at end give exact answer and brief summary as well.
 
   
-  Always respond in a helpful, conversational tone while being technically accurate.`;
+  Always respond in a helpful, conversational tone while being technically accurate.
+
+  `;
 
   const result = streamText({
     model: groq("llama-3.1-8b-instant"),
