@@ -162,7 +162,9 @@ This aligns with modern AI-first product engineering.
 DbGenie/
 │
 ├── app/                # Next.js App Router
-├── api/                # Serverless API routes
+     ├── api/           # Serverless API routes
+     ├── layout.tsx           # Serverless API routes
+     ├── page.tsx           # Serverless API routes
 ├── components/         # UI Components
 ├── lib/                # AI & DB logic
 ├── db/                 # SQLite database
