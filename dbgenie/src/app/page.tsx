@@ -8,6 +8,20 @@ export default function Chat() {
   const { messages, sendMessage } = useChat();
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+      <div className="relative text-center mb-12">
+        <div className="absolute inset-0 blur-3xl opacity-30 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+        <h1 className="relative text-4xl md:text-5xl font-extrabold tracking-tight">
+          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            DBGenie Intelligence
+          </span>
+        </h1>
+
+        <div className="mt-4 inline-flex items-center px-4 py-1.5 rounded-full text-xs font-medium bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 shadow-sm">
+          🧠 From Query to Insight — Instantly
+        </div>
+      </div>
+
       {messages.map((message) => (
         <div key={message.id} className="whitespace-pre-wrap mb-4">
           <div className="font-bold mb-2">
@@ -95,7 +109,7 @@ export default function Chat() {
         }}
       >
         <input
-          className="fixed dark:bg-zinc-900 bottom-0 w-full max-w-md p-2 mb-8 border border-zinc-300 dark:border-zinc-800 rounded shadow-xl"
+          className="fixed dark:bg-zinc-900 bottom-0 w-full max-w-md p-2 mb-8 border-2 border-zinc-300 dark:border-zinc-800 rounded shadow-xl"
           value={input}
           placeholder="Say something..."
           onChange={(e) => setInput(e.currentTarget.value)}
