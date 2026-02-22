@@ -26,7 +26,7 @@ export default function Chat() {
         <div key={message.id} className="whitespace-pre-wrap mb-4">
           <div className="font-bold mb-2">
             {message.role === "user" ? (
-              <span className="text-3xl">👨‍💻 :</span>
+              <span className="text-3xl">👨‍💻:</span>
             ) : (
               <span className="text-3xl">🧞‍♀️:</span>
             )}
